@@ -1,0 +1,14 @@
+# Build
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Secretos — NUNCA versionar (Fase 0 del plan de seguridad)
+.env
+*.env
+!.env.example

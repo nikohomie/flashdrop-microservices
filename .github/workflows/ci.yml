@@ -26,7 +26,7 @@ jobs:
       - name: Dar permisos de ejecución a gradlew
         run: chmod +x ./gradlew
       - name: Build y tests unitarios
-        run: ./gradlew build --no-daemon
+        run: ./gradlew build --no-daemon -PexcludeIntegration=true
 
   secrets-scan:
     name: Escaneo de secretos (S-18)

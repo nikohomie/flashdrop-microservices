@@ -38,4 +38,9 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // En CI se pasa -PexcludeIntegration=true para omitir tests que requieren
+    // Docker + JPA/Flyway (incompatibles con el perfil supabase REST).
+    if (project.hasProperty("excludeIntegration")) {
+        exclude("**/integration/**")
+    }
 }

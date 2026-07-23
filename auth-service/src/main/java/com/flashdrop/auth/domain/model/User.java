@@ -5,7 +5,7 @@ import com.flashdrop.auth.domain.valueobject.Email;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
+
 
 /**
  * Entidad de dominio User. Inmutable y sin dependencias de infraestructura
@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 public class User {
 
-    private final UUID id;
+    private final Long id;
     private final Email email;
     private final String rut;
     private final String name;
@@ -23,9 +23,8 @@ public class User {
     private final List<Role> roles;
     private final Instant createdAt;
 
-    public User(UUID id, Email email, String rut, String name, String lastName,
+    public User(Long id, Email email, String rut, String name, String lastName,
                 String phone, String photo, List<Role> roles, Instant createdAt) {
-        if (id == null) throw new InvalidUserException("El id del usuario es obligatorio");
         if (email == null) throw new InvalidUserException("El email es obligatorio");
         this.id = id;
         this.email = email;
@@ -38,7 +37,7 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public UUID id() { return id; }
+    public Long id() { return id; }
     public Email email() { return email; }
     public String rut() { return rut; }
     public String name() { return name; }

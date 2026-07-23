@@ -14,7 +14,6 @@ import com.flashdrop.auth.domain.valueobject.Phone;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 public class RegisterUserService implements RegisterUserUseCase {
 
@@ -24,16 +23,14 @@ public class RegisterUserService implements RegisterUserUseCase {
     private final CredentialStore credentials;
     private final RoleRepository roles;
     private final PasswordHasher hasher;
-    private final IdGenerator ids;
     private final AuditLogger audit;
 
     public RegisterUserService(UserRepository users, CredentialStore credentials, RoleRepository roles,
-                               PasswordHasher hasher, IdGenerator ids, AuditLogger audit) {
+                               PasswordHasher hasher, AuditLogger audit) {
         this.users = users;
         this.credentials = credentials;
         this.roles = roles;
         this.hasher = hasher;
-        this.ids = ids;
         this.audit = audit;
     }
 
@@ -50,14 +47,13 @@ public class RegisterUserService implements RegisterUserUseCase {
         Role defaultRole = roles.findByName(DEFAULT_ROLE)
                 .orElseThrow(() -> new IllegalStateException("Rol base no configurado: " + DEFAULT_ROLE));
 
-        UUID userId = ids.newId();
-        users.save(new User(userId, email, command.rut(), command.name(), command.lastName(),
+        User createdUser = users.save(new User(null, email, command.rut(), command.name(), command.lastName(),
                 phone, null, List.of(defaultRole), Instant.now()));
 
-        credentials.save(new Credentials(ids.newId(), userId, email.value(),
+        credentials.save(new Credentials(null, createdUser.id(), email.value(),
                 hasher.hash(command.rawPassword()), "ACTIVE"));
 
         audit.record(new AuditLogger.AuditEvent("REGISTER", email.value(), "SUCCESS", null));
-        return new RegisterUserResult(userId);
+        return new RegisterUserResult(createdUser.id());
     }
 }

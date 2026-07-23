@@ -18,16 +18,16 @@ public class UseCaseConfiguration {
 
     @Bean
     RefreshTokenManager refreshTokenManager(RefreshTokenStore store, OpaqueTokenService opaque,
-                                            IdGenerator ids, JwtProperties props) {
-        return new RefreshTokenManager(store, opaque, ids,
+                                            JwtProperties props) {
+        return new RefreshTokenManager(store, opaque,
                 Duration.ofDays(props.getRefreshExpirationDays()));
     }
 
     @Bean
     RegisterUserUseCase registerUserUseCase(UserRepository users, CredentialStore credentials,
                                             RoleRepository roles, PasswordHasher hasher,
-                                            IdGenerator ids, AuditLogger audit) {
-        return new RegisterUserService(users, credentials, roles, hasher, ids, audit);
+                                            AuditLogger audit) {
+        return new RegisterUserService(users, credentials, roles, hasher, audit);
     }
 
     @Bean

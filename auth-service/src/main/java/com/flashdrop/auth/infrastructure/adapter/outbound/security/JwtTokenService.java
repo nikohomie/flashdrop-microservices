@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Emite y verifica JWT firmados con RS256 (clave asimétrica). El gateway puede
@@ -56,7 +55,7 @@ public class JwtTokenService implements TokenService {
                     .parseSignedClaims(token)
                     .getPayload();
             List<String> roles = c.get("roles", List.class);
-            return new TokenClaims(UUID.fromString(c.getSubject()),
+            return new TokenClaims(Long.parseLong(c.getSubject()),
                     c.get("email", String.class), roles == null ? List.of() : roles);
         } catch (Exception e) {
             throw new InvalidTokenException();

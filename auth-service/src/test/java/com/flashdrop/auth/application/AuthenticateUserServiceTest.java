@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -43,7 +41,7 @@ class AuthenticateUserServiceTest {
 
     @Test
     void passwordIncorrectoLanzaElMismoErrorGenerico() {
-        var creds = new Credentials(UUID.randomUUID(), UUID.randomUUID(), "user@x.cl", "hash", "ACTIVE");
+        var creds = new Credentials(1L, 1L, "user@x.cl", "hash", "ACTIVE");
         when(credentials.findByLogin("user@x.cl")).thenReturn(Optional.of(creds));
         when(hasher.matches("mala", "hash")).thenReturn(false);
         assertThrows(InvalidCredentialsException.class,
@@ -52,8 +50,8 @@ class AuthenticateUserServiceTest {
 
     @Test
     void loginCorrectoDevuelveAccessYRefresh() {
-        UUID userId = UUID.randomUUID();
-        var creds = new Credentials(UUID.randomUUID(), userId, "user@x.cl", "hash", "ACTIVE");
+        Long userId = 1L;
+        var creds = new Credentials(1L, userId, "user@x.cl", "hash", "ACTIVE");
         var user = new User(userId, new Email("user@x.cl"), null, "Ana", "P", null, null, List.of(), Instant.now());
         when(credentials.findByLogin("user@x.cl")).thenReturn(Optional.of(creds));
         when(hasher.matches("buena", "hash")).thenReturn(true);

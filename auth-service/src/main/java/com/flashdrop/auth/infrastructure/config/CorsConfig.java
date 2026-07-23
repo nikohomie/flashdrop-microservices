@@ -15,7 +15,8 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
-            "http://localhost:3000",   // Gateway local
+            "http://localhost:3000",   // Gateway local alternative
+            "http://localhost:8080",   // API Gateway local
             "http://localhost:5173",   // Frontend local (Vite)
             "http://localhost:4200"    // Frontend local (Angular)
         ));

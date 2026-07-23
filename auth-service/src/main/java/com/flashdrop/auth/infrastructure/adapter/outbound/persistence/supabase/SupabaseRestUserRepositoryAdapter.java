@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClient;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class SupabaseRestUserRepositoryAdapter implements UserRepository {
@@ -73,7 +72,7 @@ public class SupabaseRestUserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(UUID id) {
+    public Optional<User> findById(Long id) {
         UserRow[] rows = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/users")

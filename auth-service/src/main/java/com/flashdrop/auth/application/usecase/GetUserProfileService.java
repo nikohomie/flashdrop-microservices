@@ -3,10 +3,8 @@ package com.flashdrop.auth.application.usecase;
 import com.flashdrop.auth.application.dto.UserProfile;
 import com.flashdrop.auth.application.port.inbound.GetUserProfileUseCase;
 import com.flashdrop.auth.application.port.outbound.UserRepository;
-import com.flashdrop.auth.domain.exception.InvalidTokenException;
+import com.flashdrop.auth.domain.exception.UserNotFoundException;
 import com.flashdrop.auth.domain.model.User;
-
-import java.util.UUID;
 
 public class GetUserProfileService implements GetUserProfileUseCase {
 
@@ -17,9 +15,11 @@ public class GetUserProfileService implements GetUserProfileUseCase {
     }
 
     @Override
-    public UserProfile getProfile(UUID userId) {
-        User u = users.findById(userId).orElseThrow(InvalidTokenException::new);
-        return new UserProfile(u.id(), u.name(), u.lastName(), u.email().value(),
-                u.phone(), u.rut(), u.photo(), u.roleNames());
+    public UserProfile getProfile(Long userId) {
+        User user = users.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado: " + userId));
+
+        return new UserProfile(user.id(), user.name(), user.lastName(), user.email().value(),
+                user.phone(), user.rut(), user.photo(), user.roleNames());
     }
 }

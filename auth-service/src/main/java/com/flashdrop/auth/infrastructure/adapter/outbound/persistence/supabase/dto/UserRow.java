@@ -1,5 +1,6 @@
 package com.flashdrop.auth.infrastructure.adapter.outbound.persistence.supabase.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flashdrop.auth.domain.model.Role;
 import com.flashdrop.auth.domain.model.User;
@@ -7,10 +8,10 @@ import com.flashdrop.auth.domain.valueobject.Email;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record UserRow(
-        UUID id,
+        Long id,
         String email,
         String rut,
         String name,

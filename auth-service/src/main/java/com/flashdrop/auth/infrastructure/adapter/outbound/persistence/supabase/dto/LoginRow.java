@@ -6,13 +6,14 @@ import com.flashdrop.auth.domain.model.Credentials;
 import java.util.UUID;
 
 public record LoginRow(
-        UUID id,
+        Long id,
         String login,
-        @JsonProperty("password_hash") String passwordHash,
-        String status,
-        @JsonProperty("user_id") UUID userId
+        String password,
+        Integer status,
+        @JsonProperty("id_users") Long userId
 ) {
     public Credentials toDomain() {
-        return new Credentials(id, userId, login, passwordHash, status);
+        String statusStr = (status != null && status == 1) ? "ACTIVE" : "INACTIVE";
+        return new Credentials(id, userId, login, password, statusStr);
     }
 }

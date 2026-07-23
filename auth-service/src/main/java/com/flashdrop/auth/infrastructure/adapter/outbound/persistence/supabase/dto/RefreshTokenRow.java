@@ -7,8 +7,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record RefreshTokenRow(
-        UUID id,
-        @JsonProperty("user_id") UUID userId,
+        Long id,
+        @JsonProperty("user_id") Long userId,
         @JsonProperty("token_hash") String tokenHash,
         @JsonProperty("expires_at") Instant expiresAt,
         boolean revoked,

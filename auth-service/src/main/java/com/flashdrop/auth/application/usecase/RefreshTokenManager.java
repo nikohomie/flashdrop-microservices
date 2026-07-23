@@ -1,6 +1,5 @@
 package com.flashdrop.auth.application.usecase;
 
-import com.flashdrop.auth.application.port.outbound.IdGenerator;
 import com.flashdrop.auth.application.port.outbound.OpaqueTokenService;
 import com.flashdrop.auth.application.port.outbound.RefreshTokenStore;
 import com.flashdrop.auth.domain.exception.InvalidTokenException;
@@ -8,7 +7,6 @@ import com.flashdrop.auth.domain.model.RefreshToken;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.UUID;
 
 /**
  * Emite, rota y revoca refresh tokens (S-15). Compartido por el login,
@@ -18,21 +16,18 @@ public class RefreshTokenManager {
 
     private final RefreshTokenStore store;
     private final OpaqueTokenService opaque;
-    private final IdGenerator ids;
     private final Duration ttl;
 
     public RefreshTokenManager(RefreshTokenStore store, OpaqueTokenService opaque,
-                               IdGenerator ids, Duration ttl) {
+                               Duration ttl) {
         this.store = store;
         this.opaque = opaque;
-        this.ids = ids;
         this.ttl = ttl;
     }
 
-    /** Emite un refresh token nuevo para un usuario y devuelve el valor crudo. */
-    public String issueFor(UUID userId) {
+    public String issueFor(Long userId) {
         String raw = opaque.generate();
-        store.save(new RefreshToken(ids.newId(), userId, opaque.hash(raw),
+        store.save(new RefreshToken(null, userId, opaque.hash(raw),
                 Instant.now().plus(ttl), false));
         return raw;
     }
@@ -53,5 +48,5 @@ public class RefreshTokenManager {
         store.findByTokenHash(opaque.hash(rawToken)).ifPresent(t -> store.revoke(t.revokedCopy()));
     }
 
-    public record Rotation(UUID userId, String newRefreshToken) {}
+    public record Rotation(Long userId, String newRefreshToken) {}
 }

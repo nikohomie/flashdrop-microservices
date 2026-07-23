@@ -2,10 +2,8 @@ package com.flashdrop.auth.infrastructure.adapter.outbound.persistence.supabase.
 
 import com.flashdrop.auth.domain.model.Role;
 
-import java.util.UUID;
-
 public record RoleRow(
-        UUID id,
+        Long id,
         String name,
         String route
 ) {

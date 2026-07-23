@@ -27,11 +27,12 @@ public class SupabaseRestCredentialStoreAdapter implements CredentialStore {
 
     @Override
     public void save(Credentials credentials) {
+        Integer statusInt = "ACTIVE".equalsIgnoreCase(credentials.status()) ? 1 : 0;
         LoginRow dto = new LoginRow(
                 credentials.id(),
                 credentials.login(),
                 credentials.passwordHash(),
-                credentials.status(),
+                statusInt,
                 credentials.userId()
         );
 
